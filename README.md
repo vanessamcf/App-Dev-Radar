@@ -68,8 +68,14 @@ It was used ReactJs, Node.js and React Native to build a web and mobile version.
 
 `yarn start`
 
+**Android**
 
-![mobile](./screens/dev_radar_mobile.gif)
+![android](./screens/dev_radar_android.gif)
+
+**IOS**
+
+![ios](./screens/dev_radar_ios.gif)
+
 
 ##  :page_facing_up: License
 
