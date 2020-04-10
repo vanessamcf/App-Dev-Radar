@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Image, View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, Image, View, Text, TextInput, TouchableOpacity, Keyboard } from 'react-native';
 import MapView, { Marker, Callout } from 'react-native-maps';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { requestPermissionsAsync, getCurrentPositionAsync } from 'expo-location';
 import { MaterialIcons } from '@expo/vector-icons';
 
@@ -12,6 +13,7 @@ function Main({ navigation }) {
   const [devs, setDevs] = useState([]);
   const [currentRegion, setCurrentRegion] = useState(null);
   const [techs, setTechs] = useState('');
+  const [keyboardShow, setKeyboardShow] = useState(false);
 
   useEffect(() => {
     async function loadInitialPosition() {
@@ -31,6 +33,8 @@ function Main({ navigation }) {
       }
     }
     loadInitialPosition();
+    Keyboard.addListener('keyboardDidShow', () => setKeyboardShow(true));
+    Keyboard.addListener('keyboardDidHide', () => setKeyboardShow(false));
   }, []);
 
   useEffect(() => {
@@ -73,6 +77,7 @@ function Main({ navigation }) {
     return null;
   }
 
+
   return (
     <>
     <MapView 
@@ -94,6 +99,7 @@ function Main({ navigation }) {
           navigation.navigate('Profile', {github_username: dev.github_username})
 
         }}>
+          
           <View style={styles.callout}>
             <Text style={styles.devName}>{dev.name}</Text>
             <Text style={styles.devBio}>{dev.bio}</Text>
@@ -103,8 +109,7 @@ function Main({ navigation }) {
       </Marker>
       ))}
     </MapView>
-    <KeyboardAvoidingView behavior="position" enabled >
-    <View style={styles.searchForm}>
+    <View style={[styles.searchForm, (keyboardShow ? styles.searchOn : styles.searchOff)]}>
       <TextInput 
         style={styles.searchInput}
         placeholder="Search devs by techs..."
@@ -118,10 +123,30 @@ function Main({ navigation }) {
         <MaterialIcons name="my-location" size={20} color="#fff" />  
       </TouchableOpacity>  
     </View>
-    </KeyboardAvoidingView>
+    
   </>
+ 
   );
 }
+
+// const IconButton = (
+//   <Icon.Button
+//   name="plus-circle"
+//   backgroundColor="#8e4dff"
+//   onPress={navigation.navigate("Create")}>
+//   </Icon.Button>
+// );
+
+
+
+// const customTextButton = (
+// <Icon.Button name="facebook" backgroundColor="#3b5998">
+// <Text style={{ fontFamily: 'Arial', fontSize: 15 }}>
+// Login with Facebook
+// </Text>
+// </Icon.Button>
+// );
+
 
 const styles = StyleSheet.create({
   map: {
@@ -150,12 +175,16 @@ const styles = StyleSheet.create({
   },
   searchForm: {
     position: 'absolute',
-    bottom: 20,
     left: 20,
     right: 20,
     zIndex: 5,
     flexDirection: 'row',
-    paddingBottom: 60,
+  },
+  searchOn: {
+    top: 20,
+  },
+  searchOff: {
+    bottom: 20,
   },
   searchInput: {
     flex:1,

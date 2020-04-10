@@ -11,7 +11,7 @@ const server = http.Server(app);
 setupWebsocket(server);
 
 
-mongoose.connect('mongodb+srv://vanessamcf:<password>@cluster0-jolke.mongodb.net/test?retryWrites=true&w=majority', {
+mongoose.connect('mongodb+srv://vanessamcf:liebe53092@cluster0-jolke.mongodb.net/test?retryWrites=true&w=majority', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
